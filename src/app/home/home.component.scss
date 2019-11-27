@@ -1,0 +1,17 @@
+:host { width: 100%;}
+
+.card {
+  svg, .article-image {
+    height: 120px;
+  }
+
+  .article-image {
+    background-size: cover;
+  }
+
+  .add-to-cart {
+    img {
+      height: 1.8em;
+    }
+  }
+}

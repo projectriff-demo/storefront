@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: storefront
+  name: storefront
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: storefront
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: storefront
+    spec:
+      containers:
+        - image: tanzumkondo/storefront
+          imagePullPolicy: Always
+          name: storefront

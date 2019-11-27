@@ -1,0 +1,19 @@
+<button type="button" class="btn btn-lg btn-link" (click)="toggle()">🛒</button>
+<div id="cart" [hidden]="hiddenCart">
+  <ng-container *ngIf="cart$ | async as cart; else noItems">
+    <ul class="list-group">
+      <ng-container *ngIf="cart.items.length; else noItems">
+        <li *ngFor="let item of sortByName(cart.items)" class="list-group-item">{{item.name}}
+          ({{item.priceInUsd | currency: 'USD'}} per unit)
+          <span class="badge badge-primary badge-pill">{{item.inCart}}</span>
+          <button type="button" class="remove-from-cart btn btn-danger btn-sm" (click)="removeItem(item)">Remove all
+          </button>
+        </li>
+      </ng-container>
+    </ul>
+  </ng-container>
+
+  <ng-template #noItems>
+    <li class="list-group-item text-center" id="no-items">Nothing in cart: buy buy buy! 💰</li>
+  </ng-template>
+</div>
