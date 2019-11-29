@@ -1,0 +1,29 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - '**'
+  pull_request: {}
+
+jobs:
+
+  unit:
+    strategy:
+      matrix:
+        os:
+          - ubuntu-latest
+        node: [ '13', '12', '10' ]
+      fail-fast: false
+    runs-on: ${{ matrix.os }}
+    name: Run tests
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node }}
+      - run: npm ci
+      - run: npm test
+      - run: |
+          docker run --detach --publish 8080:8080 tanzumkondo/inventory-api
+          npm run e2e
