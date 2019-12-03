@@ -9,7 +9,7 @@ spec:
     - name: http2
       port: 80
       protocol: TCP
-      targetPort: 4200
+      targetPort: 8080
   selector:
     app: storefront
   type: LoadBalancer
