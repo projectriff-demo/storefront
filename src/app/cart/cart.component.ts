@@ -9,6 +9,8 @@ import {Cart, CartItem} from './cart';
   styleUrls: ['./cart.component.scss']
 })
 export class CartComponent implements OnInit, OnDestroy {
+
+  private cartEventSubscriptions: Subscription[];
   private cartSubscription: Subscription;
   private firstSubscription = true;
 
@@ -20,6 +22,7 @@ export class CartComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.cart$ = this.cartService.cart$;
+    this.cartEventSubscriptions = [];
     this.cartSubscription = this.cart$.subscribe((_) => {
       if (this.firstSubscription) { // keep cart hidden on first load
         this.firstSubscription = false;
@@ -33,6 +36,9 @@ export class CartComponent implements OnInit, OnDestroy {
     if (this.cartSubscription) {
       this.cartSubscription.unsubscribe();
     }
+    this.cartEventSubscriptions.forEach((ces) => {
+      ces.unsubscribe();
+    });
   }
 
   toggle() {
@@ -40,7 +46,7 @@ export class CartComponent implements OnInit, OnDestroy {
   }
 
   removeItem(item: CartItem) {
-    this.cartService.removeItem(item);
+    this.cartEventSubscriptions.push(this.cartService.removeItem(item).subscribe());
   }
 
   sortByName(items: CartItem[]) {
