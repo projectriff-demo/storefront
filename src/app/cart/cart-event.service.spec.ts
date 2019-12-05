@@ -26,6 +26,10 @@ describe('CartEventService', () => {
     service = TestBed.get(CartEventService);
   });
 
+  afterEach(() => {
+    httpMock.verify();
+  });
+
   it('should be created', () => {
     expect(service).toBeTruthy();
   });
