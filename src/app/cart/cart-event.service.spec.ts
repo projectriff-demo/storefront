@@ -10,11 +10,10 @@ describe('CartEventService', () => {
   let httpMock;
   let service: CartEventService;
   const event = {
+    user: 'demo',
     action: 'remove',
-    sku: 'some-sku',
-    newCart: {
-      items: [],
-    } as Cart
+    product: 'some-sku',
+    quantity: 1
   } as CartEvent;
 
   beforeEach(() => {

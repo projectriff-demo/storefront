@@ -42,7 +42,12 @@ describe('CartService', () => {
       service.addItem(article);
 
       expect(storageServiceSpy.save).toHaveBeenCalledWith('cart', expectedCart);
-      expect(cartEventServiceSpy.publish).toHaveBeenCalledWith({action: 'add', sku: article.sku, newCart: expectedCart} as CartEvent);
+      expect(cartEventServiceSpy.publish).toHaveBeenCalledWith({
+        user: 'demo',
+        action: 'add',
+        product: article.sku,
+        quantity: 1
+      } as CartEvent);
     });
   });
 
@@ -100,9 +105,10 @@ describe('CartService', () => {
 
       expect(storageServiceSpy.save).toHaveBeenCalledWith('cart', cart);
       expect(cartEventServiceSpy.publish).toHaveBeenCalledWith({
+        user: 'demo',
         action: 'remove',
-        sku: initialCartItem1.sku,
-        newCart: cart
+        product: initialCartItem1.sku,
+        quantity: initialCartItem1.inCart
       } as CartEvent);
     });
   });

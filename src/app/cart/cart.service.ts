@@ -38,9 +38,10 @@ export class CartService {
     const newCart = {items: this.mergeItems(article)} as Cart;
     this.publish(newCart);
     this.cartEventService.publish({
+      user: 'demo',
       action: 'add',
-      sku: article.sku,
-      newCart
+      product: article.sku,
+      quantity: 1
     } as CartEvent);
   }
 
@@ -49,9 +50,10 @@ export class CartService {
     const newCart = {items: this.cart.items.filter(i => i.sku !== cartItem.sku)};
     this.publish(newCart);
     this.cartEventService.publish({
+      user: 'demo',
       action: 'remove',
-      sku: cartItem.sku,
-      newCart
+      product: cartItem.sku,
+      quantity: cartItem.inCart
     } as CartEvent);
   }
 

@@ -1,7 +1,6 @@
-import {Cart} from './cart';
-
 export interface CartEvent {
+  user: string;
   action: 'remove' | 'add';
-  sku: string;
-  newCart: Cart;
+  product: string;
+  quantity: number;
 }
