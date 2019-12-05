@@ -6,21 +6,26 @@ import {Article} from '../article/article';
 import {toCartItem} from './cart';
 import {ArticleService} from '../article/article.service';
 import {of} from 'rxjs';
+import {CartEventService} from './cart-event.service';
+import {CartEvent} from './cart-event';
 
 
 describe('CartService', () => {
   let storageServiceSpy: jasmine.SpyObj<StorageService>;
   let articleServiceSpy: jasmine.SpyObj<ArticleService>;
+  let cartEventServiceSpy: jasmine.SpyObj<CartEventService>;
   let service: CartService;
 
   beforeEach(() => {
     storageServiceSpy = jasmine.createSpyObj(['save', 'get']);
     articleServiceSpy = jasmine.createSpyObj(['findAll']);
     articleServiceSpy.findAll.and.returnValue(of([]));
+    cartEventServiceSpy = jasmine.createSpyObj(['publish']);
     return TestBed.configureTestingModule({
       providers: [
         {provide: StorageService, useValue: storageServiceSpy},
         {provide: ArticleService, useValue: articleServiceSpy},
+        {provide: CartEventService, useValue: cartEventServiceSpy},
       ]
     });
   });
@@ -37,6 +42,7 @@ describe('CartService', () => {
       service.addItem(article);
 
       expect(storageServiceSpy.save).toHaveBeenCalledWith('cart', expectedCart);
+      expect(cartEventServiceSpy.publish).toHaveBeenCalledWith({action: 'add', sku: article.sku, newCart: expectedCart} as CartEvent);
     });
   });
 
@@ -88,9 +94,16 @@ describe('CartService', () => {
     });
 
     it('removes articles', () => {
+      const cart = {items: []};
+
       service.removeItem(initialCartItem1);
 
-      expect(storageServiceSpy.save).toHaveBeenCalledWith('cart', {items: []});
+      expect(storageServiceSpy.save).toHaveBeenCalledWith('cart', cart);
+      expect(cartEventServiceSpy.publish).toHaveBeenCalledWith({
+        action: 'remove',
+        sku: initialCartItem1.sku,
+        newCart: cart
+      } as CartEvent);
     });
   });
 });

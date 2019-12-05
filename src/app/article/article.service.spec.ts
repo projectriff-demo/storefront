@@ -40,6 +40,10 @@ describe('ArticleService', () => {
     service = TestBed.get(ArticleService);
   });
 
+  afterEach(() => {
+    httpMock.verify();
+  });
+
   it('should list articles in stock', (done) => {
     service.findAll().subscribe((articles) => {
       expect(articles).toEqual([article1, article2]);
