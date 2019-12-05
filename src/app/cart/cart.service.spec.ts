@@ -7,7 +7,7 @@ import {toCartItem} from './cart';
 import {ArticleService} from '../article/article.service';
 import {of} from 'rxjs';
 import {CartEventService} from './cart-event.service';
-import {CartEvent} from './cart-event';
+import {CartEvent} from './cart-events';
 
 
 describe('CartService', () => {

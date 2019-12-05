@@ -4,6 +4,7 @@ import {CartComponent} from './cart.component';
 import {CartService} from './cart.service';
 import {of, ReplaySubject} from 'rxjs';
 import {CartItem} from './cart';
+import {RouterTestingModule} from '@angular/router/testing';
 
 describe('CartComponent', () => {
   let component: CartComponent;
@@ -22,6 +23,7 @@ describe('CartComponent', () => {
     };
 
     TestBed.configureTestingModule({
+      imports: [RouterTestingModule],
       declarations: [CartComponent],
       providers: [
         {provide: CartService, useValue: cartServiceStub},
@@ -46,7 +48,7 @@ describe('CartComponent', () => {
     cartSubject.next({items: [cartItem]});
     fixture.detectChanges();
 
-    const domItems = Array.from(dom.querySelectorAll('li')).map((title: any) => title.textContent);
+    const domItems = Array.from(dom.querySelectorAll('li.cart-item')).map((title: any) => title.textContent);
     expect(domItems.length).toEqual(1, '1 cart item should be displayed');
     expect(domItems[0]).toContain('name ($2.00 per unit)');
   });

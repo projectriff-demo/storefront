@@ -2,19 +2,20 @@ import {TestBed} from '@angular/core/testing';
 
 import {CartEventService} from './cart-event.service';
 import {HttpClientTestingModule, HttpTestingController} from '@angular/common/http/testing';
-import {Cart} from './cart';
-import {CartEvent} from './cart-event';
+import {CartEvent, CheckoutEvent} from './cart-events';
 
 describe('CartEventService', () => {
 
   let httpMock;
   let service: CartEventService;
-  const event = {
+  const events = new Map();
+  events.set('cart', {
     user: 'demo',
     action: 'remove',
     product: 'some-sku',
     quantity: 1
-  } as CartEvent;
+  } as CartEvent);
+  events.set('checkout', {user: 'demo'} as CheckoutEvent);
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -34,14 +35,16 @@ describe('CartEventService', () => {
     expect(service).toBeTruthy();
   });
 
-  it('submits events', (done) => {
-    service.publish(event).subscribe(() => {
-      done();
-    });
+  events.forEach((event, eventType) => {
+    it(`submits ${eventType} events`, (done) => {
+      service.publish(event).subscribe(() => {
+        done();
+      });
 
-    const req = httpMock.expectOne('/cart-events');
-    expect(req.request.method).toBe('POST');
-    expect(req.request.body).toEqual(event);
-    req.flush(null);
+      const req = httpMock.expectOne('/cart-events');
+      expect(req.request.method).toBe('POST');
+      expect(req.request.body).toEqual(event);
+      req.flush(null);
+    });
   });
 });

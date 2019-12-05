@@ -1,0 +1,28 @@
+<table class="table">
+  <thead class="thead-dark">
+  <tr>
+    <th scope="col">SKU</th>
+    <th scope="col">Name</th>
+    <th scope="col">Unit price</th>
+    <th scope="col">Quantity</th>
+  </tr>
+  </thead>
+  <tbody>
+  <ng-container *ngIf="cart$ | async as cart; else noItems">
+    <tr *ngFor="let item of sortByName(cart.items)">
+      <td>{{item.sku}}</td>
+      <td>{{item.name}}</td>
+      <td>{{item.priceInUsd | currency:'USD'}}</td>
+      <td>{{item.inCart}}</td>
+    </tr>
+    <tr class="bg-success text-center">
+      <td id="total" colspan="4">Total price: {{price(cart.items) | currency: 'USD'}}</td>
+    </tr>
+  </ng-container>
+  <ng-template #noItems>
+    <tr>
+      <th colspan="4">No items in cart = nothing to check out! 🤓</th>
+    </tr>
+  </ng-template>
+  </tbody>
+</table>

@@ -5,7 +5,7 @@ import {Cart, CartItem, toCartItem} from './cart';
 import {Observable, ReplaySubject} from 'rxjs';
 import {ArticleService} from '../article/article.service';
 import {CartEventService} from './cart-event.service';
-import {CartEvent} from './cart-event';
+import {CartEvent} from './cart-events';
 
 @Injectable({providedIn: 'root'})
 export class CartService {
