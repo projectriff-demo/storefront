@@ -2,7 +2,7 @@ import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {CartComponent} from './cart.component';
 import {CartService} from './cart.service';
-import {ReplaySubject} from 'rxjs';
+import {of, ReplaySubject} from 'rxjs';
 import {CartItem} from './cart';
 
 describe('CartComponent', () => {
@@ -17,6 +17,7 @@ describe('CartComponent', () => {
     const cartServiceStub = {
       cart$: cartSubject.asObservable(), removeItem: (article: CartItem) => {
         removeItemCalled = true;
+        return of();
       }
     };
 

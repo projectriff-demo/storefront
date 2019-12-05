@@ -2,7 +2,7 @@ import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {HomeComponent} from './home.component';
 import {ArticleService} from '../article/article.service';
-import {ReplaySubject} from 'rxjs';
+import {of, ReplaySubject} from 'rxjs';
 import {Article} from '../article/article';
 import {CartService} from '../cart/cart.service';
 
@@ -30,6 +30,7 @@ describe('HomeComponent', () => {
     const articleServiceSpy = jasmine.createSpyObj<ArticleService>(['findAll']);
     articleServiceSpy.findAll.and.returnValue(articles$.asObservable());
     cartServiceSpy = jasmine.createSpyObj<CartService>(['addItem']);
+    cartServiceSpy.addItem.and.returnValue(of());
     TestBed.configureTestingModule({
       declarations: [HomeComponent],
       providers: [
