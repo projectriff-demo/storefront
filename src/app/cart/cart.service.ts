@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {Article} from '../article/article';
 import {StorageService} from '../storage/storage.service';
 import {Cart, CartItem, toCartItem} from './cart';
+import {HttpClient} from '@angular/common/http';
 import {ReplaySubject} from 'rxjs';
 import {ArticleService} from '../article/article.service';
 
@@ -13,7 +14,8 @@ export class CartService {
   public cart$ = this.cartSubject.asObservable();
 
   constructor(private storageService: StorageService,
-              private articleService: ArticleService) {
+              private articleService: ArticleService,
+              private http: HttpClient) {
 
     this.articleService.findAll().subscribe(inventory => {
       const cart = this.storageService.get('cart') || {items: []};
@@ -34,12 +36,26 @@ export class CartService {
   addItem(article: Article) {
     const newCart = {items: this.mergeItems(article)} as Cart;
     this.publish(newCart);
+    const event = {
+      action: 'add',
+      sku: article.sku,
+      newCart: newCart
+    };
+    console.log(event);
+    this.http.post('/cart-events', event).subscribe();
   }
 
   // entirely remove an item from cart (whether there are 1 or 23 of them)
   removeItem(cartItem: CartItem) {
     const newCart = {items: this.cart.items.filter(i => i.sku !== cartItem.sku)};
     this.publish(newCart);
+    const event = {
+      action: 'remove',
+      sku: cartItem.sku,
+      newCart: newCart
+    };
+    console.log(event);
+    this.http.post('/cart-events', event).subscribe();
   }
 
   private mergeItems(article: Article): CartItem[] {
