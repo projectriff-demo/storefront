@@ -1,8 +1,17 @@
 :host { width: 100%;}
 
 .card {
+
+  .card-body:hover {
+    background-color: rgb(248, 249, 250);
+  }
+
   svg, .article-image {
-    height: 120px;
+    height: 160px;
+  }
+
+  .card-text {
+    min-height: 50px;
   }
 
   .article-image {

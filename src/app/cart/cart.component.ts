@@ -1,7 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {CartService} from './cart.service';
 import {Observable, Subscription} from 'rxjs';
-import {Cart, CartItem} from './cart';
+import {Cart, CartItem, sortByName} from './cart';
 
 @Component({
   selector: 'app-cart',
@@ -16,6 +16,7 @@ export class CartComponent implements OnInit, OnDestroy {
 
   cart$: Observable<Cart>;
   hiddenCart = true;
+  sortByName = sortByName;
 
   constructor(private cartService: CartService) {
   }
@@ -47,17 +48,5 @@ export class CartComponent implements OnInit, OnDestroy {
 
   removeItem(item: CartItem) {
     this.cartEventSubscriptions.push(this.cartService.removeItem(item).subscribe());
-  }
-
-  sortByName(items: CartItem[]) {
-    return items.sort((a, b) => {
-      if (a.name < b.name) {
-        return -1;
-      }
-      if (a.name > b.name) {
-        return 1;
-      }
-      return 0;
-    });
   }
 }

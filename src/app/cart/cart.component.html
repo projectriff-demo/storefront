@@ -3,12 +3,13 @@
   <ng-container *ngIf="cart$ | async as cart; else noItems">
     <ul class="list-group">
       <ng-container *ngIf="cart.items.length; else noItems">
-        <li *ngFor="let item of sortByName(cart.items)" class="list-group-item">{{item.name}}
+        <li *ngFor="let item of sortByName(cart.items)" class="list-group-item cart-item">{{item.name}}
           ({{item.priceInUsd | currency: 'USD'}} per unit)
           <span class="badge badge-primary badge-pill">{{item.inCart}}</span>
           <button type="button" class="remove-from-cart btn btn-danger btn-sm" (click)="removeItem(item)">Remove all
           </button>
         </li>
+        <li class="list-group-item"><a class="btn btn-outline-primary" [routerLink]="'checkout'">Check out</a></li>
       </ng-container>
     </ul>
   </ng-container>

@@ -5,7 +5,7 @@ import {Cart, CartItem, toCartItem} from './cart';
 import {Observable, ReplaySubject} from 'rxjs';
 import {ArticleService} from '../article/article.service';
 import {CartEventService} from './cart-event.service';
-import {CartEvent} from './cart-event';
+import {CartEvent, CheckoutEvent} from './cart-events';
 
 @Injectable({providedIn: 'root'})
 export class CartService {
@@ -37,7 +37,7 @@ export class CartService {
   // add item once to cart
   addItem(article: Article): Observable<any> {
     this.updateStoredCart({items: this.mergeItems(article)} as Cart);
-    return this.cartEventService.publish({
+    return this.cartEventService.publishCartEvent({
       user: 'demo',
       action: 'add',
       product: article.sku,
@@ -48,12 +48,17 @@ export class CartService {
   // entirely remove an item from cart (whether there are 1 or 23 of them)
   removeItem(cartItem: CartItem): Observable<any> {
     this.updateStoredCart({items: this.cart.items.filter(i => i.sku !== cartItem.sku)});
-    return this.cartEventService.publish({
+    return this.cartEventService.publishCartEvent({
       user: 'demo',
       action: 'remove',
       product: cartItem.sku,
       quantity: cartItem.inCart
     } as CartEvent);
+  }
+
+  checkOutCart(): Observable<any> {
+    this.updateStoredCart({items: []});
+    return this.cartEventService.publishCheckoutEvent({user: 'demo'} as CheckoutEvent);
   }
 
   private mergeItems(article: Article): CartItem[] {

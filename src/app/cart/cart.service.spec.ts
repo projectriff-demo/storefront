@@ -7,7 +7,7 @@ import {toCartItem} from './cart';
 import {ArticleService} from '../article/article.service';
 import {of} from 'rxjs';
 import {CartEventService} from './cart-event.service';
-import {CartEvent} from './cart-event';
+import {CartEvent, CheckoutEvent} from './cart-events';
 
 
 describe('CartService', () => {
@@ -20,7 +20,7 @@ describe('CartService', () => {
     storageServiceSpy = jasmine.createSpyObj(['save', 'get']);
     articleServiceSpy = jasmine.createSpyObj(['findAll']);
     articleServiceSpy.findAll.and.returnValue(of([]));
-    cartEventServiceSpy = jasmine.createSpyObj(['publish']);
+    cartEventServiceSpy = jasmine.createSpyObj(['publishCartEvent', 'publishCheckoutEvent']);
     return TestBed.configureTestingModule({
       providers: [
         {provide: StorageService, useValue: storageServiceSpy},
@@ -42,7 +42,7 @@ describe('CartService', () => {
       service.addItem(article);
 
       expect(storageServiceSpy.save).toHaveBeenCalledWith('cart', expectedCart);
-      expect(cartEventServiceSpy.publish).toHaveBeenCalledWith({
+      expect(cartEventServiceSpy.publishCartEvent).toHaveBeenCalledWith({
         user: 'demo',
         action: 'add',
         product: article.sku,
@@ -104,12 +104,19 @@ describe('CartService', () => {
       service.removeItem(initialCartItem1);
 
       expect(storageServiceSpy.save).toHaveBeenCalledWith('cart', cart);
-      expect(cartEventServiceSpy.publish).toHaveBeenCalledWith({
+      expect(cartEventServiceSpy.publishCartEvent).toHaveBeenCalledWith({
         user: 'demo',
         action: 'remove',
         product: initialCartItem1.sku,
         quantity: initialCartItem1.inCart
       } as CartEvent);
+    });
+
+    it('checks out cart', () => {
+      service.checkOutCart();
+
+      expect(storageServiceSpy.save).toHaveBeenCalledWith('cart', {items: []});
+      expect(cartEventServiceSpy.publishCheckoutEvent).toHaveBeenCalledWith({user: 'demo'} as CheckoutEvent);
     });
   });
 });
