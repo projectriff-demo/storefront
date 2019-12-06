@@ -6,5 +6,9 @@
   "/cart-events": {
     "target": "http://localhost:3000",
     "secure": false
+  },
+  "/checkout-events": {
+    "target": "http://localhost:3000",
+    "secure": false
   }
 }
