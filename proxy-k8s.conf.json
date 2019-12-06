@@ -1,0 +1,17 @@
+{
+  "/api/article": {
+    "target": "http://inventory-api.default.example.com:80",
+    "changeOrigin": true,
+    "secure": false
+  },
+  "/cart-events": {
+    "target": "http://events-api.default.example.com:80",
+    "changeOrigin": true,
+    "secure": false
+  },
+  "/checkout-events": {
+    "target": "http://events-api.default.example.com:80",
+    "changeOrigin": true,
+    "secure": false
+  }
+}

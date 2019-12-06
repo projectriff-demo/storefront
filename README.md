@@ -24,6 +24,11 @@ $ npm install # if not done before
 $ npm start # runs ng serve
 ```
 
+If every required service is already deployed to Kubernetes, run instead:
+```shell script
+$ npm run start-with-k8s
+```
+
 ## Development
 
 ### Testing

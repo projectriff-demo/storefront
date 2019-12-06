@@ -1,17 +1,14 @@
 {
   "/api/article": {
-    "target": "http://inventory-api.default.example.com:80",
-    "changeOrigin": true,
+    "target": "http://localhost:8080",
     "secure": false
   },
   "/cart-events": {
-    "target": "http://events-api.default.example.com:80",
-    "changeOrigin": true,
+    "target": "http://localhost:3000",
     "secure": false
   },
   "/checkout-events": {
-    "target": "http://events-api.default.example.com:80",
-    "changeOrigin": true,
+    "target": "http://localhost:3000",
     "secure": false
   }
 }

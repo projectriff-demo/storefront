@@ -4,6 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
+    "start-with-k8s": "ng serve --proxy-config proxy-k8s.conf.json",
     "build": "ng build",
     "buildprod": "ng build --prod",
     "testwatch": "ng test",
