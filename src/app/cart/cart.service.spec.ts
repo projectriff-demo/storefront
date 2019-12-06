@@ -7,7 +7,7 @@ import {toCartItem} from './cart';
 import {ArticleService} from '../article/article.service';
 import {of} from 'rxjs';
 import {CartEventService} from './cart-event.service';
-import {CartEvent} from './cart-events';
+import {CartEvent, CheckoutEvent} from './cart-events';
 
 
 describe('CartService', () => {
@@ -20,7 +20,7 @@ describe('CartService', () => {
     storageServiceSpy = jasmine.createSpyObj(['save', 'get']);
     articleServiceSpy = jasmine.createSpyObj(['findAll']);
     articleServiceSpy.findAll.and.returnValue(of([]));
-    cartEventServiceSpy = jasmine.createSpyObj(['publishCartEvent']);
+    cartEventServiceSpy = jasmine.createSpyObj(['publishCartEvent', 'publishCheckoutEvent']);
     return TestBed.configureTestingModule({
       providers: [
         {provide: StorageService, useValue: storageServiceSpy},
@@ -110,6 +110,13 @@ describe('CartService', () => {
         product: initialCartItem1.sku,
         quantity: initialCartItem1.inCart
       } as CartEvent);
+    });
+
+    it('checks out cart', () => {
+      service.checkOutCart();
+
+      expect(storageServiceSpy.save).toHaveBeenCalledWith('cart', {items: []});
+      expect(cartEventServiceSpy.publishCheckoutEvent).toHaveBeenCalledWith({user: 'demo'} as CheckoutEvent);
     });
   });
 });

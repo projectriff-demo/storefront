@@ -6,6 +6,8 @@ import {of} from 'rxjs';
 import {Cart, CartItem} from '../cart/cart';
 import {CartEventService} from '../cart/cart-event.service';
 import {CheckoutEvent} from '../cart/cart-events';
+import {RouterTestingModule} from '@angular/router/testing';
+import {Router} from '@angular/router';
 
 describe('CheckoutComponent', () => {
   let fixture: ComponentFixture<CheckoutComponent>;
@@ -17,16 +19,16 @@ describe('CheckoutComponent', () => {
       {sku: 'sku2', priceInUsd: 33, inCart: 3, description: 'description2', quantity: 475} as CartItem
     ]
   };
-  let cartEventServiceSpy: jasmine.SpyObj<CartEventService>;
+  let checkOutCartSpy: jasmine.Spy;
 
   beforeEach(async(() => {
-    cartEventServiceSpy = jasmine.createSpyObj(['publishCheckoutEvent']);
-    cartEventServiceSpy.publishCheckoutEvent.and.returnValue(of());
+    checkOutCartSpy = jasmine.createSpy('checkout');
+    checkOutCartSpy.and.returnValue(of());
     TestBed.configureTestingModule({
+      imports: [RouterTestingModule],
       declarations: [CheckoutComponent],
       providers: [
-        {provide: CartService, useValue: {cart$: of(cart)}},
-        {provide: CartEventService, useValue: cartEventServiceSpy},
+        {provide: CartService, useValue: {cart$: of(cart), checkOutCart: checkOutCartSpy}},
       ]
     }).compileComponents();
   }));
@@ -42,13 +44,8 @@ describe('CheckoutComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('sends checkout event on page load', () => {
-    expect(cartEventServiceSpy.publishCheckoutEvent)
-      .toHaveBeenCalledWith({user: 'demo'} as CheckoutEvent);
-  });
-
   it('lists items in cart', () => {
-    const skus = Array.from(dom.querySelectorAll('tr td:nth-child(1):not(#total)'))
+    const skus = Array.from(dom.querySelectorAll('tr:not(.last) td:nth-child(1)'))
       .map((td: any) => td.textContent);
 
     expect(skus).toEqual(cart.items.map(_ => _.sku));
@@ -57,6 +54,12 @@ describe('CheckoutComponent', () => {
   it('shows the total price', () => {
     const textContent = dom.querySelector('#total').textContent;
 
-    expect(textContent).toEqual('Total price: $253.00');
+    expect(textContent).toEqual('$253.00');
+  });
+
+  it('checks out cart on button click', () => {
+    dom.querySelector('tr.last .btn').click();
+
+    expect(checkOutCartSpy).toHaveBeenCalled();
   });
 });
