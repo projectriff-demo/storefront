@@ -11,7 +11,11 @@ export class CartEventService {
   constructor(private httpClient: HttpClient) {
   }
 
-  publish(event: CartEvent | CheckoutEvent): Observable<any> {
+  publishCartEvent(event: CartEvent): Observable<any> {
     return this.httpClient.post('/cart-events', event);
+  }
+
+  publishCheckoutEvent(event: CheckoutEvent): Observable<any> {
+    return this.httpClient.post('/checkout-events', event);
   }
 }

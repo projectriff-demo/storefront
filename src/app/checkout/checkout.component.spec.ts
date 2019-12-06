@@ -20,8 +20,8 @@ describe('CheckoutComponent', () => {
   let cartEventServiceSpy: jasmine.SpyObj<CartEventService>;
 
   beforeEach(async(() => {
-    cartEventServiceSpy = jasmine.createSpyObj(['publish']);
-    cartEventServiceSpy.publish.and.returnValue(of());
+    cartEventServiceSpy = jasmine.createSpyObj(['publishCheckoutEvent']);
+    cartEventServiceSpy.publishCheckoutEvent.and.returnValue(of());
     TestBed.configureTestingModule({
       declarations: [CheckoutComponent],
       providers: [
@@ -43,7 +43,7 @@ describe('CheckoutComponent', () => {
   });
 
   it('sends checkout event on page load', () => {
-    expect(cartEventServiceSpy.publish)
+    expect(cartEventServiceSpy.publishCheckoutEvent)
       .toHaveBeenCalledWith({user: 'demo'} as CheckoutEvent);
   });
 

@@ -8,14 +8,13 @@ describe('CartEventService', () => {
 
   let httpMock;
   let service: CartEventService;
-  const events = new Map();
-  events.set('cart', {
+  const cartEvent = {
     user: 'demo',
     action: 'remove',
     product: 'some-sku',
     quantity: 1
-  } as CartEvent);
-  events.set('checkout', {user: 'demo'} as CheckoutEvent);
+  } as CartEvent;
+  const checkoutEvent = {user: 'demo'} as CheckoutEvent;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -35,16 +34,25 @@ describe('CartEventService', () => {
     expect(service).toBeTruthy();
   });
 
-  events.forEach((event, eventType) => {
-    it(`submits ${eventType} events`, (done) => {
-      service.publish(event).subscribe(() => {
-        done();
-      });
-
-      const req = httpMock.expectOne('/cart-events');
-      expect(req.request.method).toBe('POST');
-      expect(req.request.body).toEqual(event);
-      req.flush(null);
+  it(`submits cart events`, (done) => {
+    service.publishCartEvent(cartEvent).subscribe(() => {
+      done();
     });
+
+    const req = httpMock.expectOne('/cart-events');
+    expect(req.request.method).toBe('POST');
+    expect(req.request.body).toEqual(cartEvent);
+    req.flush(null);
+  });
+
+  it(`submits checkout events`, (done) => {
+    service.publishCheckoutEvent(checkoutEvent).subscribe(() => {
+      done();
+    });
+
+    const req = httpMock.expectOne('/checkout-events');
+    expect(req.request.method).toBe('POST');
+    expect(req.request.body).toEqual(checkoutEvent);
+    req.flush(null);
   });
 });
