@@ -6,8 +6,8 @@ It is a GUI for a fictional e-commerce shop.
 ## Deployment to K8s
 
 ```shell script
-docker build -t tanzumkondo/storefront .
-docker push tanzumkondo/storefront
+docker build -t projectriffdemo/storefront .
+docker push projectriffdemo/storefront
 ```
 
 ```shell script

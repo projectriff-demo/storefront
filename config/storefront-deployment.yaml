@@ -16,6 +16,6 @@ spec:
         app: storefront
     spec:
       containers:
-        - image: tanzumkondo/storefront
+        - image: projectriffdemo/storefront
           imagePullPolicy: Always
           name: storefront
