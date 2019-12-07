@@ -39,7 +39,6 @@ export class CartService {
     this.updateStoredCart({items: this.mergeItems(article)} as Cart);
     return this.cartEventService.publishCartEvent({
       user: 'demo',
-      action: 'add',
       product: article.sku,
       quantity: this.countInCart(article)
     } as CartEvent);
@@ -50,7 +49,6 @@ export class CartService {
     this.updateStoredCart({items: this.cart.items.filter(i => i.sku !== cartItem.sku)});
     return this.cartEventService.publishCartEvent({
       user: 'demo',
-      action: 'remove',
       product: cartItem.sku,
       quantity: 0
     } as CartEvent);
