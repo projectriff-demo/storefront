@@ -39,9 +39,8 @@ export class CartService {
     this.updateStoredCart({items: this.mergeItems(article)} as Cart);
     return this.cartEventService.publishCartEvent({
       user: 'demo',
-      action: 'add',
       product: article.sku,
-      quantity: 1
+      quantity: this.countInCart(article)
     } as CartEvent);
   }
 
@@ -50,15 +49,21 @@ export class CartService {
     this.updateStoredCart({items: this.cart.items.filter(i => i.sku !== cartItem.sku)});
     return this.cartEventService.publishCartEvent({
       user: 'demo',
-      action: 'remove',
       product: cartItem.sku,
-      quantity: cartItem.inCart
+      quantity: 0
     } as CartEvent);
   }
 
   checkOutCart(): Observable<any> {
     this.updateStoredCart({items: []});
     return this.cartEventService.publishCheckoutEvent({user: 'demo'} as CheckoutEvent);
+  }
+
+  private countInCart(article: Article): number {
+    for (const item of this.cart.items) {
+      if (item.sku === article.sku) return item.inCart;
+    }
+    return 0;
   }
 
   private mergeItems(article: Article): CartItem[] {
