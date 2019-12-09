@@ -7,8 +7,8 @@
     "start-with-k8s": "ng serve --proxy-config proxy-k8s.conf.json",
     "build": "ng build",
     "buildprod": "ng build --prod",
-    "testwatch": "ng test",
-    "test": "ng test --watch=false",
+    "testwatch": "npm run lint && ng test",
+    "test": "npm run lint && ng test --watch=false",
     "lint": "ng lint",
     "e2e": "ng e2e",
     "webdriver-manager": "webdriver-manager"

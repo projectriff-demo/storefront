@@ -44,7 +44,6 @@ describe('CartService', () => {
       expect(storageServiceSpy.save).toHaveBeenCalledWith('cart', expectedCart);
       expect(cartEventServiceSpy.publishCartEvent).toHaveBeenCalledWith({
         user: 'demo',
-        action: 'add',
         product: article.sku,
         quantity: 1
       } as CartEvent);
@@ -106,9 +105,8 @@ describe('CartService', () => {
       expect(storageServiceSpy.save).toHaveBeenCalledWith('cart', cart);
       expect(cartEventServiceSpy.publishCartEvent).toHaveBeenCalledWith({
         user: 'demo',
-        action: 'remove',
         product: initialCartItem1.sku,
-        quantity: initialCartItem1.inCart
+        quantity: 0
       } as CartEvent);
     });
 

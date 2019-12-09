@@ -61,7 +61,9 @@ export class CartService {
 
   private countInCart(article: Article): number {
     for (const item of this.cart.items) {
-      if (item.sku === article.sku) return item.inCart;
+      if (item.sku === article.sku) {
+        return item.inCart;
+      }
     }
     return 0;
   }
