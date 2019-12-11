@@ -19,4 +19,8 @@ export class StorageService {
   save(key: string, value: any) {
     this.sessionStorage.setItem(key, JSON.stringify(value));
   }
+
+  unset(key: string) {
+    this.sessionStorage.removeItem(key);
+  }
 }

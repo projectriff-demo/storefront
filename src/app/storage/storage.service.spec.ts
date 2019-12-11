@@ -50,4 +50,14 @@ describe('StorageService', () => {
     expect(result).toEqual(value);
   });
 
+  it('unsets values', () => {
+    const value = {jane: 'doe'};
+    inMemoryStorage.setItem('baz', JSON.stringify(value));
+
+    service.unset('baz');
+
+    expect(inMemoryStorage.getItem('baz'))
+      .toBeNull();
+  });
+
 });
