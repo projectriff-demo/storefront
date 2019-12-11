@@ -1,4 +1,13 @@
 nav {
   width: 100%;
   justify-content: center;
+
+  #logout {
+    cursor: pointer;
+
+    .fas {
+      font-size: 14pt;
+      color: black;
+    }
+  }
 }

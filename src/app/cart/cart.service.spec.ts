@@ -116,5 +116,11 @@ describe('CartService', () => {
       expect(storageServiceSpy.save).toHaveBeenCalledWith('cart', {items: []});
       expect(cartEventServiceSpy.publishCheckoutEvent).toHaveBeenCalledWith({user: 'demo'} as CheckoutEvent);
     });
+
+    it('clears cart', () => {
+      service.clear();
+
+      expect(storageServiceSpy.save).toHaveBeenCalledWith('cart', {items: []});
+    });
   });
 });
