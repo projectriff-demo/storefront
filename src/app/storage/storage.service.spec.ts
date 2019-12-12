@@ -2,19 +2,19 @@ import {TestBed} from '@angular/core/testing';
 
 import {StorageService} from './storage.service';
 import {Globals} from '../globals';
-import {InMemoryLocalStorage} from './in-memory-storage';
+import {InMemoryStorage} from './in-memory-storage';
 
 
 describe('StorageService', () => {
 
-  let inMemoryLocalStorage: InMemoryLocalStorage;
+  let inMemoryStorage: InMemoryStorage;
   let service: StorageService;
 
   beforeEach(() => {
-    inMemoryLocalStorage = new InMemoryLocalStorage();
+    inMemoryStorage = new InMemoryStorage();
     return TestBed.configureTestingModule({
       providers: [
-        {provide: Globals, useValue: {localStorage: inMemoryLocalStorage}},
+        {provide: Globals, useValue: {sessionStorage: inMemoryStorage}},
       ]
     });
   });
@@ -32,7 +32,7 @@ describe('StorageService', () => {
 
     service.save('foo', value);
 
-    expect(inMemoryLocalStorage.getItem('foo')).toEqual(JSON.stringify(value));
+    expect(inMemoryStorage.getItem('foo')).toEqual(JSON.stringify(value));
   });
 
   it('gets null for unregistered items', () => {
@@ -43,11 +43,21 @@ describe('StorageService', () => {
 
   it('gets values', () => {
     const value = {jane: 'doe'};
-    inMemoryLocalStorage.setItem('baz', JSON.stringify(value));
+    inMemoryStorage.setItem('baz', JSON.stringify(value));
 
     const result = service.get('baz');
 
     expect(result).toEqual(value);
+  });
+
+  it('unsets values', () => {
+    const value = {jane: 'doe'};
+    inMemoryStorage.setItem('baz', JSON.stringify(value));
+
+    service.unset('baz');
+
+    expect(inMemoryStorage.getItem('baz'))
+      .toBeNull();
   });
 
 });

@@ -8,12 +8,15 @@ import {ArticleService} from '../article/article.service';
 import {of} from 'rxjs';
 import {CartEventService} from './cart-event.service';
 import {CartEvent, CheckoutEvent} from './cart-events';
+import {AuthService} from '../login/auth.service';
 
 
 describe('CartService', () => {
+  const loggedInUsername = 'some-username';
   let storageServiceSpy: jasmine.SpyObj<StorageService>;
   let articleServiceSpy: jasmine.SpyObj<ArticleService>;
   let cartEventServiceSpy: jasmine.SpyObj<CartEventService>;
+  let authServiceSpy: jasmine.SpyObj<AuthService>;
   let service: CartService;
 
   beforeEach(() => {
@@ -21,11 +24,14 @@ describe('CartService', () => {
     articleServiceSpy = jasmine.createSpyObj(['findAll']);
     articleServiceSpy.findAll.and.returnValue(of([]));
     cartEventServiceSpy = jasmine.createSpyObj(['publishCartEvent', 'publishCheckoutEvent']);
+    authServiceSpy = jasmine.createSpyObj(['getLogin']);
+    authServiceSpy.getLogin.and.returnValue(loggedInUsername);
     return TestBed.configureTestingModule({
       providers: [
         {provide: StorageService, useValue: storageServiceSpy},
         {provide: ArticleService, useValue: articleServiceSpy},
         {provide: CartEventService, useValue: cartEventServiceSpy},
+        {provide: AuthService, useValue: authServiceSpy},
       ]
     });
   });
@@ -43,7 +49,7 @@ describe('CartService', () => {
 
       expect(storageServiceSpy.save).toHaveBeenCalledWith('cart', expectedCart);
       expect(cartEventServiceSpy.publishCartEvent).toHaveBeenCalledWith({
-        user: 'demo',
+        user: loggedInUsername,
         product: article.sku,
         quantity: 1
       } as CartEvent);
@@ -104,7 +110,7 @@ describe('CartService', () => {
 
       expect(storageServiceSpy.save).toHaveBeenCalledWith('cart', cart);
       expect(cartEventServiceSpy.publishCartEvent).toHaveBeenCalledWith({
-        user: 'demo',
+        user: loggedInUsername,
         product: initialCartItem1.sku,
         quantity: 0
       } as CartEvent);
@@ -114,7 +120,13 @@ describe('CartService', () => {
       service.checkOutCart();
 
       expect(storageServiceSpy.save).toHaveBeenCalledWith('cart', {items: []});
-      expect(cartEventServiceSpy.publishCheckoutEvent).toHaveBeenCalledWith({user: 'demo'} as CheckoutEvent);
+      expect(cartEventServiceSpy.publishCheckoutEvent).toHaveBeenCalledWith({user: loggedInUsername} as CheckoutEvent);
+    });
+
+    it('clears cart', () => {
+      service.clear();
+
+      expect(storageServiceSpy.save).toHaveBeenCalledWith('cart', {items: []});
     });
   });
 });

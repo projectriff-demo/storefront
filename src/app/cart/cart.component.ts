@@ -24,10 +24,10 @@ export class CartComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.cart$ = this.cartService.cart$;
     this.cartEventSubscriptions = [];
-    this.cartSubscription = this.cart$.subscribe((_) => {
+    this.cartSubscription = this.cart$.subscribe((cart) => {
       if (this.firstSubscription) { // keep cart hidden on first load
         this.firstSubscription = false;
-      } else {
+      } else if (cart.items.length > 0) {
         this.hiddenCart = false;
       }
     });

@@ -1,4 +1,13 @@
 nav {
   width: 100%;
-  justify-content: center;
+
+  #greetings {
+    padding-left: 0.5vw;
+
+    #logout {
+      padding-left: 0.5vw;
+      cursor: pointer;
+      color: black;
+    }
+  }
 }

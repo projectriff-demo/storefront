@@ -1,9 +1,16 @@
 <div class="container">
-
-  <div class="row justify-content-center align-items-center">
-    <nav class="navbar navbar-expand-lg navbar-light bg-light mb-3">
-      <a class="navbar-brand" href="#">{{title}}</a>
-      <app-cart *ngIf="router.url !== '/checkout'"></app-cart>
+  <div class="row">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light mb-3 d-flex justify-content-between">
+      <a class="navbar-brand" href="#">{{title}} <i class="fas fa-home"></i></a>
+      <div class="d-flex align-items-center">
+        <app-cart *ngIf="showCart()"></app-cart>
+        <div id="greetings" class="d-flex align-items-center">
+          <span *ngIf="showLogout()" class="navbar-text">Greetings, {{username$ | async}}!</span>
+          <button class="btn btn-lg btn-link" id="logout" *ngIf="showLogout()" (click)="logOut()"><i
+            class="fas fa-sign-out-alt"
+            title="Log out"></i></button>
+        </div>
+      </div>
     </nav>
   </div>
 

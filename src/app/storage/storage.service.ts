@@ -6,17 +6,21 @@ import {Globals} from '../globals';
 })
 export class StorageService {
 
-  private localStorage: Storage;
+  private sessionStorage: Storage;
 
   constructor(globals: Globals) {
-    this.localStorage = globals.localStorage;
+    this.sessionStorage = globals.sessionStorage;
   }
 
   get(key: string): any {
-    return JSON.parse(this.localStorage.getItem(key));
+    return JSON.parse(this.sessionStorage.getItem(key));
   }
 
   save(key: string, value: any) {
-    this.localStorage.setItem(key, JSON.stringify(value));
+    this.sessionStorage.setItem(key, JSON.stringify(value));
+  }
+
+  unset(key: string) {
+    this.sessionStorage.removeItem(key);
   }
 }

@@ -1,9 +1,7 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {CartService} from '../cart/cart.service';
-import {Observable, Subscription} from 'rxjs';
+import {Observable} from 'rxjs';
 import {Cart, sortByName, totalPrice} from '../cart/cart';
-import {CartEventService} from '../cart/cart-event.service';
-import {CheckoutEvent} from '../cart/cart-events';
 import {Router} from '@angular/router';
 
 @Component({
