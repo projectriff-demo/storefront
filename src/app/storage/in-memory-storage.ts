@@ -1,5 +1,5 @@
 // test implementation
-export class InMemoryLocalStorage implements Storage {
+export class InMemoryStorage implements Storage {
   private items: { [name: string]: string | null } = {};
 
   readonly length: number = Object.keys(this.items).length;

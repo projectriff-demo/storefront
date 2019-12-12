@@ -6,6 +6,7 @@ import {Observable, ReplaySubject} from 'rxjs';
 import {ArticleService} from '../article/article.service';
 import {CartEventService} from './cart-event.service';
 import {CartEvent, CheckoutEvent} from './cart-events';
+import {AuthService} from '../login/auth.service';
 
 @Injectable({providedIn: 'root'})
 export class CartService {
@@ -16,7 +17,8 @@ export class CartService {
 
   constructor(private storageService: StorageService,
               private articleService: ArticleService,
-              private cartEventService: CartEventService) {
+              private cartEventService: CartEventService,
+              private authService: AuthService) {
 
     this.articleService.findAll()
       .subscribe(inventory => {
@@ -38,7 +40,7 @@ export class CartService {
   addItem(article: Article): Observable<any> {
     this.updateStoredCart({items: this.mergeItems(article)} as Cart);
     return this.cartEventService.publishCartEvent({
-      user: 'demo',
+      user: this.authService.getLogin(),
       product: article.sku,
       quantity: this.countInCart(article)
     } as CartEvent);
@@ -48,15 +50,19 @@ export class CartService {
   removeItem(cartItem: CartItem): Observable<any> {
     this.updateStoredCart({items: this.cart.items.filter(i => i.sku !== cartItem.sku)});
     return this.cartEventService.publishCartEvent({
-      user: 'demo',
+      user: this.authService.getLogin(),
       product: cartItem.sku,
       quantity: 0
     } as CartEvent);
   }
 
   checkOutCart(): Observable<any> {
+    this.clear();
+    return this.cartEventService.publishCheckoutEvent({user: this.authService.getLogin()} as CheckoutEvent);
+  }
+
+  clear() {
     this.updateStoredCart({items: []});
-    return this.cartEventService.publishCheckoutEvent({user: 'demo'} as CheckoutEvent);
   }
 
   private countInCart(article: Article): number {
