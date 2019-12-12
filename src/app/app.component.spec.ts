@@ -5,6 +5,7 @@ import {Component} from '@angular/core';
 import {CartService} from './cart/cart.service';
 import {Cart} from './cart/cart';
 import {AuthService} from './login/auth.service';
+import {of} from 'rxjs';
 
 describe('AppComponent', () => {
   let cartServiceSpy;
@@ -16,7 +17,8 @@ describe('AppComponent', () => {
 
   beforeEach(async(() => {
     cartServiceSpy = jasmine.createSpyObj<CartService>(['clear']);
-    authServiceSpy = jasmine.createSpyObj<AuthService>(['logOut']);
+    authServiceSpy = jasmine.createSpyObj<AuthService>(['logOut', 'getLogin$']);
+    authServiceSpy.getLogin$.and.returnValue(of('some-username'));
     TestBed.configureTestingModule({
       imports: [RouterTestingModule.withRoutes([
         {path: 'login', component: FakeLoginComponent}

@@ -1,7 +1,12 @@
+.cart-icon {
+  color: black;
+  padding: 0;
+}
+
 #cart {
   position: absolute;
-  top: 10px;
-  left: 60%;
+  top: 100%;
+  left: 55%;
   width: max-content;
   z-index: 999;
 

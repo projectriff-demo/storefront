@@ -1,5 +1,6 @@
 import {Injectable} from '@angular/core';
 import {StorageService} from '../storage/storage.service';
+import {BehaviorSubject, Observable} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -7,6 +8,7 @@ import {StorageService} from '../storage/storage.service';
 export class AuthService {
 
   private redirectUrl: string;
+  private loginSubject = new BehaviorSubject<string>(this.getLogin());
 
   constructor(private storageService: StorageService) {
   }
@@ -20,10 +22,12 @@ export class AuthService {
   }
 
   logIn(username: string) {
+    this.loginSubject.next(username);
     this.storageService.save('username', username);
   }
 
   logOut() {
+    this.loginSubject.next(null);
     this.storageService.unset('username');
   }
 
@@ -31,7 +35,11 @@ export class AuthService {
     return this.getLogin() !== null;
   }
 
-  getLogin() {
+  getLogin(): string {
     return this.storageService.get('username');
+  }
+
+  getLogin$(): Observable<string> {
+    return this.loginSubject.asObservable();
   }
 }

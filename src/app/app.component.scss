@@ -1,12 +1,12 @@
 nav {
   width: 100%;
-  justify-content: center;
 
-  #logout {
-    cursor: pointer;
+  #greetings {
+    padding-left: 0.5vw;
 
-    .fas {
-      font-size: 14pt;
+    #logout {
+      padding-left: 0.5vw;
+      cursor: pointer;
       color: black;
     }
   }
