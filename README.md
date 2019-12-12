@@ -1,5 +1,7 @@
 # Storefront
 
+![Build Status](https://github.com/projectriff-demo/storefront/workflows/CI/badge.svg)
+
 This application is part of [riff](https://projectriff.io)'s shopping demo.
 It is a GUI for a fictional e-commerce shop.
 
