@@ -32,8 +32,9 @@ jobs:
         run: |
           docker run -d -p 8080:8080 --rm projectriffdemo/inventory-api
           sleep 20
-          npm install
-          npm run e2e
+          npm ci # TODO: loop/curl actuator health endpoint instead
+          npm run -- webdriver-manager update --versions.chrome="$(google-chrome --version | cut -d ' ' -f 3)"
+          npm run -- ng e2e --webdriver-update=false
   publish:
     name: Publish Docker image
     runs-on: ubuntu-latest
