@@ -31,9 +31,13 @@ jobs:
       - name: Run e2e tests
         run: |
           docker run -d -p 8080:8080 --rm projectriffdemo/inventory-api
-          sleep 20
-          npm ci # TODO: loop/curl actuator health endpoint instead
+          npm ci
           npm run -- webdriver-manager update --versions.chrome="$(google-chrome --version | cut -d ' ' -f 3)"
+          while [ "$(curl --request GET http://localhost:8080/actuator/health 2> /dev/null | jq --raw-output '.status')" != "UP" ]; do
+          	echo '(┛ಠ_ಠ)┛彡┻━┻ backend not up yet'
+          	sleep 2
+          done
+          echo '┬─┬ノ(º_ºノ) backend ready: starting e2e tests'
           npm run -- ng e2e --webdriver-update=false
   publish:
     name: Publish Docker image
