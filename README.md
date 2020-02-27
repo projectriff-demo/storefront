@@ -5,6 +5,26 @@
 This application is part of [riff](https://projectriff.io)'s shopping demo.
 It is a GUI for a fictional e-commerce shop.
 
+## Build and Deploy with riff
+
+Build the app:
+
+```shell script
+riff application create storefront \
+  --git-repo https://github.com/projectriff-demo/storefront.git \
+  --tail
+```
+
+Deploy the app:
+
+```shell script
+riff knative deployer create storefront --application-ref storefront \
+  --target-port 4200 \
+  --min-scale 1 \
+  --ingress-policy External \
+  --tail
+```
+
 ## Deployment to K8s
 
 ```shell script
