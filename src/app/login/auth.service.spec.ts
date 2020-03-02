@@ -16,7 +16,7 @@ describe('AuthService', () => {
 
   beforeEach(() => {
     testStorage.clear();
-    service = TestBed.get(AuthService);
+    service = TestBed.inject(AuthService);
   });
 
   describe('when logged in =>', () => {
