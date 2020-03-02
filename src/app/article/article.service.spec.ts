@@ -36,8 +36,8 @@ describe('ArticleService', () => {
       providers: [ArticleService]
     });
 
-    httpMock = TestBed.get(HttpTestingController);
-    service = TestBed.get(ArticleService);
+    httpMock = TestBed.inject(HttpTestingController);
+    service = TestBed.inject(ArticleService);
   });
 
   afterEach(() => {

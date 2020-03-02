@@ -39,7 +39,7 @@ describe('CartService', () => {
   describe('with an empty initial cart =>', () => {
 
     beforeEach(() => {
-      service = TestBed.get(CartService);
+      service = TestBed.inject(CartService);
     });
 
     it('saves article to storage', () => {
@@ -85,7 +85,7 @@ describe('CartService', () => {
     });
 
     beforeEach(() => {
-      service = TestBed.get(CartService);
+      service = TestBed.inject(CartService);
     });
 
     it('synchronizes cart with actual inventory on init', (done: DoneFn) => {

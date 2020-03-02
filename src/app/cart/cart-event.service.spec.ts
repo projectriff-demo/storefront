@@ -22,8 +22,8 @@ describe('CartEventService', () => {
       providers: [CartEventService]
     });
 
-    httpMock = TestBed.get(HttpTestingController);
-    service = TestBed.get(CartEventService);
+    httpMock = TestBed.inject(HttpTestingController);
+    service = TestBed.inject(CartEventService);
   });
 
   afterEach(() => {

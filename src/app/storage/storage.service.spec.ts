@@ -20,7 +20,7 @@ describe('StorageService', () => {
   });
 
   beforeEach(() => {
-    service = TestBed.get(StorageService);
+    service = TestBed.inject(StorageService);
   });
 
   it('should be created', () => {
