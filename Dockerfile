@@ -1,4 +1,4 @@
-FROM node:13-stretch AS build
+FROM node:14-stretch AS build
 WORKDIR /app
 COPY package*.json ./
 RUN npm ci
